@@ -20,8 +20,7 @@ var Scheduler = React.createClass({
 						  'Tuesday', 
 						  'Wednesday', 
 						  'Thursday', 
-						  'Friday', 
-						  'Saturday'],
+						  'Friday'],
 
 			workingHours: [	{hour:9,  text:'09:00 a.m'}, 
 							{hour:10, text:'10:00 a.m'}, 
@@ -94,21 +93,31 @@ var Scheduler = React.createClass({
 				<th>{day}</th>
 			);
 		});
+
 		//creates the schedule slots for the days
 		var _slots = function(id, h, handleClick){
+
+			//react way to do this
+			var daysforSlot = this.state.workingDays.map(function(day, i){
+				return (
+					<td id={i} onClick={handleClick.bind(null, {hour: h.hour, day:i})}></td>
+				)
+			});
+
+				// <td id='1' onClick={handleClick.bind(null, {hour: h.hour, day:1})}></td>
+				  	// <td id='2' onClick={handleClick.bind(null, {hour: h.hour, day:2})}></td>
+			    //   	<td id='3' onClick={handleClick.bind(null, {hour: h.hour, day:3})}></td>
+				  	// <td id='4' onClick={handleClick.bind(null, {hour: h.hour, day:4})}></td>
+				  	// <td id='5' onClick={handleClick.bind(null, {hour: h.hour, day:5})}></td>
 
 			return(
 				<span>
 					<td>{h.text}</td>
-				  	<td id='1' onClick={handleClick.bind(null, {hour: h.hour, day:1})}></td>
-				  	<td id='2' onClick={handleClick.bind(null, {hour: h.hour, day:2})}></td>
-			      	<td id='3' onClick={handleClick.bind(null, {hour: h.hour, day:3})}></td>
-				  	<td id='4' onClick={handleClick.bind(null, {hour: h.hour, day:4})}></td>
-				  	<td id='5' onClick={handleClick.bind(null, {hour: h.hour, day:5})}></td>
+					{daysforSlot}
 				</span>
 			)
 
-		};
+		}.bind(this);
 
 		//creates the working hours for the days and bind the click
 		//handler to the schedule slots
