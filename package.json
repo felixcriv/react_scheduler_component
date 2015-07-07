@@ -12,6 +12,19 @@
     "schedule",
     "jsx"
   ],
+  "dependencies": {
+    "browserify": "^10.2.4",
+    "express": "^4.13.1",
+    "flux": "^2.0.3",
+    "gulp": "^3.9.0",
+    "gulp-nodemon": "^2.0.3",
+    "react": "^0.13.3",
+    "react-async": "^2.1.0",
+    "react-bootstrap": "^0.23.7",
+    "react-router-component": "^0.25.4",
+    "reactify": "^1.1.1",
+    "vinyl-source-stream": "^1.1.0"
+  },
   "author": "Felix Guerrero",
   "license": "ISC"
 }
