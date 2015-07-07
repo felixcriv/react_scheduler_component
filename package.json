@@ -1,0 +1,17 @@
+{
+  "name": "react_schedule_component",
+  "version": "0.0.1",
+  "description": "Simple react schedule component (MakeMyDeal code testing interview)",
+  "main": "server.js",
+  "scripts": {
+    "test": "node server.js"
+  },
+  "keywords": [
+    "component",
+    "react",
+    "schedule",
+    "jsx"
+  ],
+  "author": "Felix Guerrero",
+  "license": "ISC"
+}
