@@ -1,3 +1,5 @@
+'use strict';
+
 var AppDispatcher = require('../dispatchers/app-dispatcher');
 var EventEmitter = require('events').EventEmitter;
 var AppConstants = require('../constants/app-constants');
