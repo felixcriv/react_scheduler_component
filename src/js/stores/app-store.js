@@ -7,15 +7,47 @@ var assign = require('react/lib/Object.assign');
 
 var CHANGE_EVENT = 'change';
 
+var appointments = [];
+
 var AppStore = assign({}, EventEmitter.prototype, {
 	emitChange: function(){
 		this.emit(CHANGE_EVENT);
+	},
+
+	addChangeListener: function(callback) {
+    	this.on(CHANGE_EVENT, callback);
+  	},
+
+	createAppointment: function(data){
+		console.log(data);
+		appointments.push(data);
+	},
+
+
+	getAppointments: function(){
+		return appointments;
+	},
+
+	editAppointment: function(){
+
 	}
 });
 
-AppDispatcher.register(function(payload){
-	console.log(payload);
-	//resolve the promise
+AppStore.dispatchToken = AppDispatcher.register(function(payload){
+
+	var action = payload.action.actionType;
+
+	console.log(action);
+
+	switch(action) {
+	
+		case AppConstants.CREATE_APPOINTMENT:
+				AppStore.createAppointment(payload);
+				AppStore.emitChange();
+				break;
+		default:
+	}
+
 	return true;
 });
 
