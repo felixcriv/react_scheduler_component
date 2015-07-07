@@ -6,6 +6,12 @@ var AppStore = require('../stores/app-store');
 
 var ReactBootstrap = require('react-bootstrap');
 
+var getAppointmentsFromStore = function () {
+  return {
+    appointments: AppStore.getAppointments()
+  };
+}
+
 /*Renders a scheduler component based on user input appointments*/
 var Scheduler = React.createClass({
 	/*
@@ -14,6 +20,9 @@ var Scheduler = React.createClass({
 
 	getInitialState: function(){
 		return {
+
+			appointments: getAppointmentsFromStore(),
+
 			selectedDay: {},
 
 			workingDays: ['Monday', 
@@ -32,32 +41,42 @@ var Scheduler = React.createClass({
 							{hour:16, text:'04:00 p.m'}],
 			patientName: '',
 			patientNumber: '',
-			showModal: false
+			showModal: false,
+			isValid : false
 		}
 	},
 
-	closeModal: function(){
+	componentDidMount: function() {
+    	AppStore.addChangeListener(this._onChange);
+    	console.log(this.state.appointments);
+  	},
+
+  	_onChange: function() {
+  		console.log(this.state.appointments);
+    	this.setState(getAppointmentsFromStore());
+  	},
+
+	closeModal: function(cb){
 		 this.setState({ showModal: false });
-	},
-
-	clearInputs: function(){
-
+		 cb();
 	},
 
 	//clear modal and focus
 	//https://facebook.github.io/react/docs/more-about-refs.html#completing-the-example
-	resetModal: function(cb){
-		this.setState({patientName: ''}, function(){
-			 React.findDOMNode(this.refs.patientName).focus();  
-		});
+	clearInputs: function(){
+		this.setState({patientName: ''});
 		this.setState({patientNumber: ''});
+	},
+
+	
+	resetModal: function(cb){
 		cb();
 	},
 
 	handleClick: function(e){
 	 
 	 var node = React.findDOMNode(this.refs[e.hour]);
-	 console.log(node.childNodes[e.day]);
+	 //console.log(node.childNodes[e.day]);
 	 this.setState({selectedDay: e});
 	 this.setState({ showModal: true });
 	},
@@ -69,7 +88,7 @@ var Scheduler = React.createClass({
 			}
 		});
 
-		this.resetModal(this.closeModal);
+		this.resetModal(this.closeModal.bind(null, this.clearInputs));
 	},
 
 	patientNamehandleChange: function(){
@@ -78,6 +97,13 @@ var Scheduler = React.createClass({
 
 	patientNumberhandleChange: function(){
 		this.setState({patientNumber : this.refs.patientNumber.getValue()});
+
+		// if(this.state.patientName.length > 4 && this.state.patientNumber.length > 7){
+		// 	this.setState({isValid : true});
+		// }else{
+		// 	this.setState({isValid : false});
+		// }
+		
 	},
 
 	render: function(){
@@ -105,10 +131,10 @@ var Scheduler = React.createClass({
 			});
 
 				// <td id='1' onClick={handleClick.bind(null, {hour: h.hour, day:1})}></td>
-				  	// <td id='2' onClick={handleClick.bind(null, {hour: h.hour, day:2})}></td>
-			    //   	<td id='3' onClick={handleClick.bind(null, {hour: h.hour, day:3})}></td>
-				  	// <td id='4' onClick={handleClick.bind(null, {hour: h.hour, day:4})}></td>
-				  	// <td id='5' onClick={handleClick.bind(null, {hour: h.hour, day:5})}></td>
+				// <td id='2' onClick={handleClick.bind(null, {hour: h.hour, day:2})}></td>
+			    //<td id='3' onClick={handleClick.bind(null, {hour: h.hour, day:3})}></td>
+				// <td id='4' onClick={handleClick.bind(null, {hour: h.hour, day:4})}></td>
+				// <td id='5' onClick={handleClick.bind(null, {hour: h.hour, day:5})}></td>
 
 			return(
 				<span>
@@ -166,7 +192,7 @@ var Scheduler = React.createClass({
 					          </Modal.Body>
 					           <Modal.Footer>
 							    	<Button onClick={this.resetModal.bind(null, this.clearInputs)}>cancel</Button>
-							        <Button onClick={this.handleSaveClick} bsStyle='primary'>Save changes</Button>
+							        <Button onClick={this.handleSaveClick} bsStyle='primary' disabled={this.state.isValid} ref="makeAppointmentButtonHandler">Make Appointment</Button>
 							    </Modal.Footer>
 					        </Modal>
 					</div>
