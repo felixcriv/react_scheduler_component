@@ -42,7 +42,7 @@ AppStore.dispatchToken = AppDispatcher.register(function(payload){
 	switch(action) {
 	
 		case AppConstants.CREATE_APPOINTMENT:
-				AppStore.createAppointment(payload);
+				AppStore.createAppointment(payload.action.appointment);
 				AppStore.emitChange();
 				break;
 		default:

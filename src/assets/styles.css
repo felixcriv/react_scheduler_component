@@ -12,3 +12,7 @@ td,th{
   border:1px solid #666;
   padding: 10px 34px;
 }
+
+.reserved{
+	background-color: red;
+}

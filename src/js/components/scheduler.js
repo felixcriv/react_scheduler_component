@@ -88,6 +88,8 @@ var Scheduler = React.createClass({
 			}
 		});
 
+		this.forceUpdate();
+
 		this.resetModal(this.closeModal.bind(null, this.clearInputs));
 	},
 
@@ -123,12 +125,16 @@ var Scheduler = React.createClass({
 		//creates the schedule slots for the days
 		var _slots = function(id, h, handleClick){
 
+
 			//react way to do this
 			var daysforSlot = this.state.workingDays.map(function(day, i){
+				
+				var isReserved = (i === 4  && h.hour === 9) ? true: false;
+				
 				return (
-					<td id={i} onClick={handleClick.bind(null, {hour: h.hour, day:i})}></td>
+					<td id={i} className={isReserved ? 'reserved' : ''} onClick={handleClick.bind(null, {hour: h.hour, day:i})}></td>
 				)
-			});
+			}.bind(this));
 
 				// <td id='1' onClick={handleClick.bind(null, {hour: h.hour, day:1})}></td>
 				// <td id='2' onClick={handleClick.bind(null, {hour: h.hour, day:2})}></td>
@@ -148,6 +154,7 @@ var Scheduler = React.createClass({
 		//creates the working hours for the days and bind the click
 		//handler to the schedule slots
 		var _schedule = this.state.workingHours.map(function(h, i){
+
 			return (
 					<tr key={i} ref={h.hour}>
 					  {_slots(i, h, this.handleClick)}
