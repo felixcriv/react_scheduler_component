@@ -29367,12 +29367,48 @@ var Scheduler = React.createClass({displayName: "Scheduler",
 		}
 	},
 
+	closeModal: function(){
+		 this.setState({ showModal: false });
+	},
+
+	clearInputs: function(){
+
+	},
+
+	//clear modal and focus
+	//https://facebook.github.io/react/docs/more-about-refs.html#completing-the-example
+	resetModal: function(cb){
+		this.setState({patientName: ''}, function(){
+			 React.findDOMNode(this.refs.patientName).focus();  
+		});
+		this.setState({patientNumber: ''});
+		cb();
+	},
+
 	handleClick: function(e){
 	 
-	 	var node = React.findDOMNode(this.refs[e.hour]);
-	 	console.log(node.childNodes[e.day]);
-	 	this.setState({selectedDay: e});
-	 	this.setState({ showModal: true });
+	 var node = React.findDOMNode(this.refs[e.hour]);
+	 console.log(node.childNodes[e.day]);
+	 this.setState({selectedDay: e});
+	 this.setState({ showModal: true });
+	},
+
+	handleSaveClick: function(){
+		AppActions.createAppointment({details: this.state.selectedDay, 
+			patientInfo: {	name: this.state.patientName,
+			 				phone: this.state.patientNumber
+			}
+		});
+
+		this.resetModal(this.closeModal);
+	},
+
+	patientNamehandleChange: function(){
+		this.setState({patientName : this.refs.patientName.getValue()});
+	},
+
+	patientNumberhandleChange: function(){
+		this.setState({patientNumber : this.refs.patientNumber.getValue()});
 	},
 
 	render: function(){
