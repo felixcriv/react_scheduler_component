@@ -1,34 +1,27 @@
 'use strict';
 
 var React = require('react');
-
 var AppActions = require('../actions/app-actions');
-
 var AppStore = require('../stores/app-store');
-
 var Schedule = require('./schedule');
 
 
 var ReactBootstrap = require('react-bootstrap');
 
-var getAppointmentsFromStore = function () {
-  return {
-    appointments: AppStore.getAppointments()
-  };
-}
 
 /*Renders a scheduler component based on user input appointments*/
 var Scheduler = React.createClass({
-	/*
-		@workingDays	
-	*/
+
 
 	getInitialState: function(){
 		return {
 
-			appointments: getAppointmentsFromStore(),
+			//getting state from the store
+			appointments: AppStore.getAppointments(),
 
 			selectedDay: {},
+			//working days for the schedule, we can use a store instead to get this data from
+			//a web service
 
 			workingDays: ['Monday', 
 						  'Tuesday', 
@@ -47,8 +40,16 @@ var Scheduler = React.createClass({
 			patientName: '',
 			patientNumber: '',
 			showModal: false,
-			isValid : false
+			/*validate form*/
+			isValid : false,
+			/*flag for user messages interaction*/
+			isEditingMode: false
 		}
+	},
+
+	componentWillMount: function(){
+
+		React.initializeTouchEvents(true);
 	},
 
 	componentDidMount: function() {
@@ -60,12 +61,19 @@ var Scheduler = React.createClass({
   	},
 
   	_onChange: function() {
-    	this.setState(getAppointmentsFromStore());
+    	this.setState(AppStore.getAppointments());
   	},
 
 	closeModal: function(cb){
 		 this.setState({ showModal: false });
 		 cb();
+	},
+
+	validationState: function(){
+		// var length = this.state.patientNumber.length;
+	 //    if (length >= 10) { return 'success'; }
+	 //    else if (length > 5) { return 'warning'; }
+	 //    else if (length > 0) { return 'error'; }
 	},
 
 	//clear modal and focus
@@ -81,12 +89,13 @@ var Scheduler = React.createClass({
 		cb();
 	},
 
-	update: function(e, patient){
+	update: function(e, patient, mode){
 
 	 this.setState({patientName: patient.name});
 	 this.setState({patientNumber: patient.phone});
 
 	 this.setState({selectedDay: e});
+	 this.setState({isEditingMode: mode});
 	
 	},
 
@@ -125,12 +134,20 @@ var Scheduler = React.createClass({
 			);
 		});
 
+		var isEditingMode = this.state.isEditingMode;
+		var status  = isEditingMode ? 'Edit ' : 'Schedule ';
+		var message = 'Please ' + (status === 'Edit ' ? 'update ' : 'enter ') + 'your contact information';
+
+		//http://react-bootstrap.github.io/components.html#input
+		//Input and table react bootstrap component
 		return(
+					
+
 					<div className='container'>
 					<div id='modal-wrapper'>
-							<Modal show={this.state.showModal} onHide={this.closeModal} dialogClassName='modalStyle'>
+							<Modal show={this.state.showModal} onHide={this.closeModal.bind(null, this.clearInputs)} dialogClassName='modalStyle'>
 					          <Modal.Header closeButton>
-					            <Modal.Title>Schedule your appointment on  
+					            <Modal.Title>{status} your appointment on  
 					            	{' ' + this.state.workingDays[this.state.selectedDay.day]} @  
 					            	{' ' + this.state.selectedDay.hour > 12 ? (' ' + this.state.selectedDay.hour - 12) : this.state.selectedDay.hour}  
 					            	{(this.state.selectedDay.hour < 12) ? 'A.M' : 'P.M'}
@@ -142,7 +159,7 @@ var Scheduler = React.createClass({
 							        type='text'
 							        value={this.state.patientName}
 							        placeholder='Enter your name'
-							        label='Please enter your contact information'
+							        label={message}
 					  
 							        hasFeedback
 							        ref='patientName'
@@ -154,6 +171,7 @@ var Scheduler = React.createClass({
 							        value={this.state.patientNumber}
 							        placeholder='Enter your phone number'
 							        hasFeedback
+							        bsStyle={this.validationState()}
 							        ref='patientNumber'
 							        groupClassName='group-class'
 							        labelClassName='label-class' 
@@ -162,12 +180,12 @@ var Scheduler = React.createClass({
 					          </Modal.Body>
 					            <Modal.Footer>
 							    	<Button onClick={this.resetModal.bind(null, this.clearInputs)}>cancel</Button>
-							        <Button onClick={this.handleSaveClick} bsStyle='primary'>Make Appointment</Button>
+							        <Button onClick={this.handleSaveClick} bsStyle='primary'>{status} appointment</Button>
 							    </Modal.Footer>
 					        </Modal>
 					</div>
 					<div className='scheduler'>
-						<Table striped>
+						<Table striped responsive>
 						  <thead>
 						    <tr>
 						      <th>Hours</th>
