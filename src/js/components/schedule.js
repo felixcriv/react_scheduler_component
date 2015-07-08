@@ -1,3 +1,5 @@
+'use strict';
+
 var React = require('react');
 var AppActions = require('../actions/app-actions');
 var AppStore = require('../stores/app-store');
@@ -29,7 +31,7 @@ var Schedule = React.createClass({
 
 	 this.setState({ showM: true });
 	 this.props.showModal(this.showM);
-	 
+
 	 var patient = {};
 
 	 var slot = e.hour+this.props.workingDays[e.day];
