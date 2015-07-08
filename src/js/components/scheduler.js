@@ -81,7 +81,10 @@ var Scheduler = React.createClass({
 		cb();
 	},
 
-	update: function(e){
+	update: function(e, patient){
+
+	 this.setState({patientName: patient.name});
+	 this.setState({patientNumber: patient.phone});
 
 	 this.setState({selectedDay: e});
 	
