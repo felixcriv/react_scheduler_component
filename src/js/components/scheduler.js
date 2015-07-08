@@ -1,8 +1,13 @@
 'use strict';
 
 var React = require('react');
+
 var AppActions = require('../actions/app-actions');
+
 var AppStore = require('../stores/app-store');
+
+var Schedule = require('./schedule');
+
 
 var ReactBootstrap = require('react-bootstrap');
 
@@ -48,11 +53,13 @@ var Scheduler = React.createClass({
 
 	componentDidMount: function() {
     	AppStore.addChangeListener(this._onChange);
-    	console.log(this.state.appointments);
+  	},
+
+  	showModal: function(show){
+  		this.setState({showModal: show});
   	},
 
   	_onChange: function() {
-  		console.log(this.state.appointments);
     	this.setState(getAppointmentsFromStore());
   	},
 
@@ -66,6 +73,7 @@ var Scheduler = React.createClass({
 	clearInputs: function(){
 		this.setState({patientName: ''});
 		this.setState({patientNumber: ''});
+		this.setState({ showModal: false });
 	},
 
 	
@@ -73,39 +81,31 @@ var Scheduler = React.createClass({
 		cb();
 	},
 
-	handleClick: function(e){
-	 
-	 var node = React.findDOMNode(this.refs[e.hour]);
-	 //console.log(node.childNodes[e.day]);
+	update: function(e){
+
 	 this.setState({selectedDay: e});
-	 this.setState({ showModal: true });
+	
 	},
 
 	handleSaveClick: function(){
-		AppActions.createAppointment({details: this.state.selectedDay, 
-			patientInfo: {	name: this.state.patientName,
-			 				phone: this.state.patientNumber
-			}
+		
+		AppActions.createAppointment({day: this.state.workingDays[this.state.selectedDay.day], 
+									  hour: this.state.selectedDay.hour, 
+									  patient: {name: this.state.patientName,
+										 		phone: this.state.patientNumber
+									}
 		});
-
-		this.forceUpdate();
 
 		this.resetModal(this.closeModal.bind(null, this.clearInputs));
 	},
 
-	patientNamehandleChange: function(){
+	patientNamehandleChange: function(e){
 		this.setState({patientName : this.refs.patientName.getValue()});
 	},
 
-	patientNumberhandleChange: function(){
-		this.setState({patientNumber : this.refs.patientNumber.getValue()});
+	patientNumberhandleChange: function(e){
 
-		// if(this.state.patientName.length > 4 && this.state.patientNumber.length > 7){
-		// 	this.setState({isValid : true});
-		// }else{
-		// 	this.setState({isValid : false});
-		// }
-		
+		this.setState({patientNumber : this.refs.patientNumber.getValue()});
 	},
 
 	render: function(){
@@ -118,49 +118,9 @@ var Scheduler = React.createClass({
 		//creates the header for the scheduler
 		var _workingdays = this.state.workingDays.map(function(day, i){
 			return(
-				<th>{day}</th>
+				<th key={day}>{day}</th>
 			);
 		});
-
-		//creates the schedule slots for the days
-		var _slots = function(id, h, handleClick){
-
-
-			//react way to do this
-			var daysforSlot = this.state.workingDays.map(function(day, i){
-				
-				var isReserved = (i === 4  && h.hour === 9) ? true: false;
-				
-				return (
-					<td id={i} className={isReserved ? 'reserved' : ''} onClick={handleClick.bind(null, {hour: h.hour, day:i})}></td>
-				)
-			}.bind(this));
-
-				// <td id='1' onClick={handleClick.bind(null, {hour: h.hour, day:1})}></td>
-				// <td id='2' onClick={handleClick.bind(null, {hour: h.hour, day:2})}></td>
-			    //<td id='3' onClick={handleClick.bind(null, {hour: h.hour, day:3})}></td>
-				// <td id='4' onClick={handleClick.bind(null, {hour: h.hour, day:4})}></td>
-				// <td id='5' onClick={handleClick.bind(null, {hour: h.hour, day:5})}></td>
-
-			return(
-				<span>
-					<td>{h.text}</td>
-					{daysforSlot}
-				</span>
-			)
-
-		}.bind(this);
-
-		//creates the working hours for the days and bind the click
-		//handler to the schedule slots
-		var _schedule = this.state.workingHours.map(function(h, i){
-
-			return (
-					<tr key={i} ref={h.hour}>
-					  {_slots(i, h, this.handleClick)}
-					</tr>
-				)
-		}.bind(this));
 
 		return(
 					<div className='container'>
@@ -168,7 +128,7 @@ var Scheduler = React.createClass({
 							<Modal show={this.state.showModal} onHide={this.closeModal} dialogClassName='modalStyle'>
 					          <Modal.Header closeButton>
 					            <Modal.Title>Schedule your appointment on  
-					            	{' ' + this.state.workingDays[this.state.selectedDay.day -1]} @  
+					            	{' ' + this.state.workingDays[this.state.selectedDay.day]} @  
 					            	{' ' + this.state.selectedDay.hour > 12 ? (' ' + this.state.selectedDay.hour - 12) : this.state.selectedDay.hour}  
 					            	{(this.state.selectedDay.hour < 12) ? 'A.M' : 'P.M'}
 					            </Modal.Title>
@@ -197,9 +157,9 @@ var Scheduler = React.createClass({
 							        onChange={this.patientNumberhandleChange} />
 					            </p>
 					          </Modal.Body>
-					           <Modal.Footer>
+					            <Modal.Footer>
 							    	<Button onClick={this.resetModal.bind(null, this.clearInputs)}>cancel</Button>
-							        <Button onClick={this.handleSaveClick} bsStyle='primary' disabled={this.state.isValid} ref="makeAppointmentButtonHandler">Make Appointment</Button>
+							        <Button onClick={this.handleSaveClick} bsStyle='primary'>Make Appointment</Button>
 							    </Modal.Footer>
 					        </Modal>
 					</div>
@@ -212,7 +172,11 @@ var Scheduler = React.createClass({
 						    </tr>
 						  </thead>
 						  <tbody>
-						    {_schedule}
+						    <Schedule showModal={this.showModal} 
+						    		  update={this.update} 
+						    		  workingDays={this.state.workingDays} 
+						    		  workingHours={this.state.workingHours}
+						    />
 						  </tbody>
 						</Table>
 					</div>
