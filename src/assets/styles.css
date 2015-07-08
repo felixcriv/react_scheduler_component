@@ -1,43 +1,45 @@
-*{
-	font-family: 'Roboto', sans-serif;
+* {
+    font-family: 'Roboto', sans-serif;
 }
 
-.container{
-	width: 90%;
-	margin: 20px auto;
+.container {
+    width: 90%;
+    margin: 20px auto;
 }
 
-table{
-  border: 1px solid #C0C0C0;
-  border-collapse:collapse;
+table {
+    border: 1px solid #C0C0C0;
+    border-collapse: collapse;
 }
 
-td,th{
-  border:1px solid #C0C0C0;
-  padding: 16px 30px !important;
-  position: relative;
-  color: #4F4F4F;
+td,
+th {
+    border: 1px solid #C0C0C0;
+    padding: 16px 30px !important;
+    position: relative;
+    color: #4F4F4F;
 }
 
-th{
-	border-bottom: 0px !important;
+th {
+    border-bottom: 0px !important;
 }
 
-.active{
-	background-color: #FE5F55 !important;
-	color: white;
-	position:absolute;
-	right:0;
-	left:0;
-	top:0;
-	padding:4px 7px;
-	bottom: 0;
+.active {
+    background-color: #FE5F55 !important;
+    color: white;
+    position: absolute;
+    right: 0;
+    left: 0;
+    top: 0;
+    padding: 4px 7px;
+    bottom: 0;
 }
 
-.cell{
-	transition: all 0.1s ease-in-out;
+.cell {
+    transition: all 0.1s ease-in-out;
 }
-.cell:hover{
-	background-color: rgba(226,248,130, 0.35);
-	cursor: pointer;
+
+.cell:hover {
+    background-color: rgba(226, 248, 130, 0.35);
+    cursor: pointer;
 }
