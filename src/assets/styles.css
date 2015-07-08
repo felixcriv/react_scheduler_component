@@ -1,3 +1,7 @@
+*{
+	font-family: 'Roboto', sans-serif;
+}
+
 .container{
 	width: 90%;
 	margin: 20px auto;
@@ -28,4 +32,12 @@ th{
 	top:0;
 	padding:4px 7px;
 	bottom: 0;
+}
+
+.cell{
+	transition: all 0.1s ease-in-out;
+}
+.cell:hover{
+	background-color: rgba(226,248,130, 0.35);
+	cursor: pointer;
 }
