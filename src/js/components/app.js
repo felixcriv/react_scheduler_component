@@ -11,7 +11,7 @@ var App = React.createClass({
 		return (
 
 			<div className="container">
-				<h3>Appointment Scheduler</h3>
+				<h3>Schedule your appointment with Us</h3>
 				<Scheduler />
 			</div>
 		)
