@@ -135,7 +135,7 @@ var Scheduler = React.createClass({
 		});
 
 		var isEditingMode = this.state.isEditingMode;
-		var status  = isEditingMode ? 'Edit ' : 'Schedule ';
+		var status  = isEditingMode ? 'Save changes ' : 'Schedule appointment';
 		var message = 'Please ' + (status === 'Edit ' ? 'update ' : 'enter ') + 'your contact information';
 
 		//http://react-bootstrap.github.io/components.html#input
@@ -180,7 +180,7 @@ var Scheduler = React.createClass({
 					          </Modal.Body>
 					            <Modal.Footer>
 							    	<Button onClick={this.resetModal.bind(null, this.clearInputs)}>cancel</Button>
-							        <Button onClick={this.handleSaveClick} bsStyle='primary'>{status} appointment</Button>
+							        <Button onClick={this.handleSaveClick} bsStyle='primary'>{status}</Button>
 							    </Modal.Footer>
 					        </Modal>
 					</div>
