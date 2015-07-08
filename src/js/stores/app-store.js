@@ -8,17 +8,22 @@ var assign = require('react/lib/Object.assign');
 var CHANGE_EVENT = 'change';
 
 //mockup data
-var appointments = [{day: 'Monday', hour: 9, 
-					 patient:{name:'Ray', phone:'555-555-1111'}}, 
-					 {day: 'Friday', hour: 12, 
-					 patient:{name:'Kai', phone:'555-555-1114'}},
-					 {day: 'Friday', hour: 14, 
-					 patient:{name:'Oreo', phone:'555-555-1112'}}];
+
+//day:patient
+var appointments = {'Monday9':'nick', 
+                    'Friday12':'kelly', 
+                    'Wednesday15':'susan'};
+// //name:number
+var patients = {'susan': '555-555-1111',
+                'kelly': '555-555-1114',
+                'nick':'555-555-1112'};
+
+// var appointments = {};
+// var patients = {};
 
 var AppStore = assign({}, EventEmitter.prototype, {
 
 	emitChange: function(){
-		console.log(CHANGE_EVENT);
 		this.emit(CHANGE_EVENT);
 	},
 
@@ -31,12 +36,31 @@ var AppStore = assign({}, EventEmitter.prototype, {
   	},
 
 	createAppointment: function(data){
-		appointments.push(data);
+		var name = data.patient.name.toLowerCase();
+		var dayHour = data.day+data.hour;
+		var phone = data.patient.phone;
+		//if patient no exists put new patient into patients and create an appointment for it
+		if(!patients[name]){
+			patients[name] = data.patient.phone;
+			//if there is/there is not an appointment then update data
+
+			appointments[dayHour] = name;
+		 //patient exists, now compare phone #
+		}else if(patients[name] !== phone){
+			//create patient and appoint. for new patient
+			patients[name] = data.patient.phone;
+			appointments[dayHour] = name;
+		}else{
+			//create patient and appoint. for new patient
+			appointments[dayHour] = name;
+		}
+
+		
+		console.log(appointments);
 	},
 
-
 	getAppointments: function(){
-		return appointments;
+		return [appointments, patients];
 	},
 
 	editAppointment: function(){
