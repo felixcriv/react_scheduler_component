@@ -29,6 +29,7 @@ th {
 th {
     border-bottom: 0px !important;
     letter-spacing: 1px;
+    text-align: center;
 }
 
 input {
@@ -81,4 +82,8 @@ input {
 hr {
     margin-top: 2px !important;
     margin-bottom: 4px !important;
+}
+
+p{
+    margin: 0px !important;
 }
