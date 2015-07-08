@@ -136,7 +136,7 @@ var Scheduler = React.createClass({
 
 		var isEditingMode = this.state.isEditingMode;
 		var status  = isEditingMode ? 'Save changes ' : 'Schedule appointment';
-		var message = 'Please ' + (status === 'Edit ' ? 'update ' : 'enter ') + 'your contact information';
+		var message = 'Please ' + (status === 'Save changes ' ? 'update ' : 'enter ') + 'your contact information';
 
 		//http://react-bootstrap.github.io/components.html#input
 		//Input and table react bootstrap component
@@ -147,7 +147,7 @@ var Scheduler = React.createClass({
 					<div id='modal-wrapper'>
 							<Modal show={this.state.showModal} onHide={this.closeModal.bind(null, this.clearInputs)} dialogClassName='modalStyle'>
 					          <Modal.Header closeButton>
-					            <Modal.Title>{status} your appointment on  
+					            <Modal.Title>{status === 'Save changes ' ? 'Update ' : 'Schedule '} your appointment on  
 					            	{' ' + this.state.workingDays[this.state.selectedDay.day]} @  
 					            	{' ' + this.state.selectedDay.hour > 12 ? (' ' + this.state.selectedDay.hour - 12) : this.state.selectedDay.hour}  
 					            	{(this.state.selectedDay.hour < 12) ? 'A.M' : 'P.M'}
@@ -155,22 +155,20 @@ var Scheduler = React.createClass({
 					          </Modal.Header>
 					          <Modal.Body>
 					            <p>
-					             <Input
+					             {isEditingMode ? <label>Name</label> : ''}<Input
 							        type='text'
 							        value={this.state.patientName}
 							        placeholder='Enter your name'
-							        label={message}
-					  
-							        hasFeedback
+							        
 							        ref='patientName'
 							        groupClassName='group-class'
 							        labelClassName='label-class'
 							        onChange={this.patientNamehandleChange} />
-							     <Input
-							        type='text'
+							     {isEditingMode ? <label>Phone</label> : ''}<Input
+							        type='phone'
 							        value={this.state.patientNumber}
 							        placeholder='Enter your phone number'
-							        hasFeedback
+							        
 							        bsStyle={this.validationState()}
 							        ref='patientNumber'
 							        groupClassName='group-class'
