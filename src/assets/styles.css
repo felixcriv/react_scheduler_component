@@ -3,8 +3,13 @@
 }
 
 .container {
-    width: 90%;
+    width: 95%;
+    min-width: 65%;
     margin: 20px auto;
+}
+
+h3 {
+    color: #4F4F4F;
 }
 
 table {
@@ -14,14 +19,20 @@ table {
 
 td,
 th {
-    border: 1px solid #C0C0C0;
+    border: 1px solid #C0C0C0 !important;
     padding: 16px 30px !important;
     position: relative;
     color: #4F4F4F;
+    height: 60px !important;
 }
 
 th {
     border-bottom: 0px !important;
+    letter-spacing: 1px;
+}
+
+input {
+    text-transform: capitalize;
 }
 
 .active {
@@ -33,6 +44,8 @@ th {
     top: 0;
     padding: 4px 7px;
     bottom: 0;
+    border-left: yellow 3px solid;
+    text-transform: capitalize;
 }
 
 .cell {
@@ -40,6 +53,32 @@ th {
 }
 
 .cell:hover {
-    background-color: rgba(226, 248, 130, 0.35);
+    background-color: rgba(255, 59, 61, 0.1);
     cursor: pointer;
+}
+/*.sticky {
+    left: -110px;
+    border: 1px solid #C0C0C0 !important;
+    border-top: 1px solid #C0C0C0 !important;
+    position: absolute;
+    top: auto;
+    width: 130px;
+    background-color: white;
+    z-index: 100;
+}*/
+
+.scheduler {
+    position: relative;
+}
+
+.hideNumber {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 74px;
+}
+
+hr {
+    margin-top: 2px !important;
+    margin-bottom: 4px !important;
 }
