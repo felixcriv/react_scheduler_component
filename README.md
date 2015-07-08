@@ -3,10 +3,18 @@ React/Flux example with Bootstrap React components
 
 #How to use it
 
-$git clone https://github.com/felixcriv/react_scheduler_component.git
+Clone the project
+```
+git clone https://github.com/felixcriv/react_scheduler_component.git
+```
+Install the dependencies
+```
+npm install --save
+```
 
-$npm install --save
-
-$gulp
+Run gulp
+```
+gulp
+```
 
 Browse to http://localhost:5000
