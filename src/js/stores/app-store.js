@@ -18,6 +18,22 @@ var patients = {'susan': '555-555-1111',
                 'kelly': '555-555-1114',
                 'nick':'555-555-1112'};
 
+
+var workingDays = ['Monday', 
+				'Tuesday', 
+				'Wednesday', 
+				'Thursday', 
+				'Friday'];
+
+var workingHours = [{hour:9,  text:'09:00 a.m'}, 
+					{hour:10, text:'10:00 a.m'}, 
+					{hour:11, text:'11:00 a.m'}, 
+					{hour:12, text:'12:00 p.m'}, 
+					{hour:13, text:'01:00 p.m'},
+					{hour:14, text:'02:00 p.m'},
+					{hour:15, text:'03:00 p.m'},
+					{hour:16, text:'04:00 p.m'}];
+
 // var appointments = {};
 // var patients = {};
 
@@ -61,6 +77,14 @@ var AppStore = assign({}, EventEmitter.prototype, {
 
 	getAppointments: function(){
 		return [appointments, patients];
+	},
+
+	getWorkingHours: function(){
+		return workingHours;
+	},
+
+	getWorkingDays: function(){
+		return workingDays;
 	},
 
 	editAppointment: function(){
