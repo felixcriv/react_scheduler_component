@@ -5,8 +5,10 @@ var AppActions = require('../actions/app-actions');
 var AppStore = require('../stores/app-store');
 var Schedule = require('./schedule');
 
-
-var ReactBootstrap = require('react-bootstrap');
+var Button = require('react-bootstrap/lib/Button');
+var Modal = require('react-bootstrap/lib/Modal');
+var Input = require('react-bootstrap/lib/Input');
+var Table = require('react-bootstrap/lib/Table');
 
 
 /*Renders a scheduler component based on user input appointments*/
@@ -111,11 +113,6 @@ var Scheduler = React.createClass({
 	},
 
 	render: function(){
-
-		var Table = ReactBootstrap.Table;
-		var Modal = ReactBootstrap.Modal;
-		var Input = ReactBootstrap.Input;
-		var Button = ReactBootstrap.Button;
 
 		//creates the header for the scheduler
 		var _workingdays = this.state.workingDays.map(function(day, i){
