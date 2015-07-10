@@ -23,13 +23,17 @@ th {
     padding: 16px 30px !important;
     position: relative;
     color: #4F4F4F;
-    height: 60px !important;
 }
 
 th {
     border-bottom: 0px !important;
     letter-spacing: 1px;
     text-align: center;
+}
+
+th:nth-child(1){
+    text-align: left;
+    width: 124px;
 }
 
 input {
