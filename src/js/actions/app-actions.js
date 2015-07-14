@@ -16,6 +16,13 @@ var AppActions = {
 			actionType: AppConstants.EDIT_APPOINTMENT,
 			appointment: appointment
 		});
+	},
+
+	deleteAppointment: function(appointment){
+		AppDispatcher.handleViewAction({
+			actionType: AppConstants.DELETE_APPOINTMENT,
+			appointment: appointment
+		});
 	}
 }
 
