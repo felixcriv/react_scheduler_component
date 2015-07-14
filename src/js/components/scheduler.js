@@ -92,9 +92,20 @@ var Scheduler = React.createClass({
 	
 	},
 
-	handleSaveClick: function(){
+	createAppointment: function(){
 		
 		AppActions.createAppointment({day: this.state.workingDays[this.state.selectedDay.day], 
+									  hour: this.state.selectedDay.hour, 
+									  patient: {name: this.state.patientName,
+										 		phone: this.state.patientNumber
+									}
+		});
+
+		this.resetModal(this.closeModal.bind(null, this.clearInputs));
+	},
+
+	editAppointment: function(){
+		AppActions.editAppointment({day: this.state.workingDays[this.state.selectedDay.day], 
 									  hour: this.state.selectedDay.hour, 
 									  patient: {name: this.state.patientName,
 										 		phone: this.state.patientNumber
@@ -109,7 +120,7 @@ var Scheduler = React.createClass({
 		AppActions.deleteAppointment({day: this.state.workingDays[this.state.selectedDay.day], 
 									  hour: this.state.selectedDay.hour});
 
-		this.closeModal(function(){});
+		this.resetModal(this.closeModal.bind(null, this.clearInputs));
 	},
 
 
@@ -176,11 +187,14 @@ var Scheduler = React.createClass({
 						    	{
 						    		
 						    		isEditingMode ?
-						    		<Button onClick={this.deleteAppointment} bsStyle='danger'>delete</Button>
-						    		: null
+						    		<span style={{'marginLeft':'5px'}}>
+						    			<Button onClick={this.deleteAppointment} bsStyle='danger'>delete</Button>
+						    			<Button onClick={this.editAppointment} bsStyle='primary'>{status}</Button>
+						    		</span>
+						    		:<Button onClick={this.createAppointment} bsStyle='primary'>{status}</Button>
 
 						    	}
-						        <Button onClick={this.handleSaveClick} bsStyle='primary'>{status}</Button>
+						        
 						    </Modal.Footer>
 				        </Modal>
 				</div>

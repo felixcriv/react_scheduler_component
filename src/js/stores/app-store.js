@@ -87,8 +87,13 @@ var AppStore = assign({}, EventEmitter.prototype, {
 		return workingDays;
 	},
 
-	editAppointment: function(){
+	editAppointment: function(data){
+		var name = data.patient.name.toLowerCase();
+		var dayHour = data.day+data.hour;
+		var phone = data.patient.phone;
 
+		patients[name] = phone;
+		appointments[dayHour] = name;
 	},
 
 	deleteAppointment: function(data){
@@ -108,6 +113,10 @@ AppStore.dispatchToken = AppDispatcher.register(function(payload){
 				break;
 		case AppConstants.DELETE_APPOINTMENT:
 				AppStore.deleteAppointment(payload.action.appointment);
+				AppStore.emitChange();
+				break;
+		case AppConstants.EDIT_APPOINTMENT: 
+				AppStore.editAppointment(payload.action.appointment);
 				AppStore.emitChange();
 				break;
 		default:
