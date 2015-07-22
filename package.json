@@ -24,6 +24,7 @@
     "react-async": "^2.1.0",
     "react-bootstrap": "^0.23.7",
     "react-router-component": "^0.25.4",
+    "react-validation-mixin": "^4.2.0",
     "reactify": "^1.1.1",
     "vinyl-source-stream": "^1.1.0"
   },
