@@ -10,8 +10,8 @@ var CHANGE_EVENT = 'change';
 //mockup data
 
 //day:patient
-var appointments = {'Monday9':'nick', 
-                    'Friday12':'kelly', 
+var appointments = {'Monday9':'nick',
+                    'Friday12':'kelly',
                     'Wednesday15':'susan'};
 // //name:number
 var patients = {'susan': '555-555-1111',
@@ -19,16 +19,12 @@ var patients = {'susan': '555-555-1111',
                 'nick':'555-555-1112'};
 
 
-var workingDays = ['Monday', 
-				'Tuesday', 
-				'Wednesday', 
-				'Thursday', 
-				'Friday'];
+var workingDays = ['Monday','Tuesday','Wednesday','Thursday','Friday'];
 
-var workingHours = [{hour:9,  text:'09:00 a.m'}, 
-					{hour:10, text:'10:00 a.m'}, 
-					{hour:11, text:'11:00 a.m'}, 
-					{hour:12, text:'12:00 p.m'}, 
+var workingHours = [{hour:9,  text:'09:00 a.m'},
+					{hour:10, text:'10:00 a.m'},
+					{hour:11, text:'11:00 a.m'},
+					{hour:12, text:'12:00 p.m'},
 					{hour:13, text:'01:00 p.m'},
 					{hour:14, text:'02:00 p.m'},
 					{hour:15, text:'03:00 p.m'},
@@ -44,12 +40,12 @@ var AppStore = assign({}, EventEmitter.prototype, {
 	},
 
 	addChangeListener: function(callback) {
-    	this.on(CHANGE_EVENT, callback);
-  	},
+    this.on(CHANGE_EVENT, callback);
+  },
 
-  	removeChangeListener: function(callback) {
-    	this.removeListener(CHANGE_EVENT, callback);
-  	},
+  removeChangeListener: function(callback) {
+    this.removeListener(CHANGE_EVENT, callback);
+  },
 
 	createAppointment: function(data){
 		var name = data.patient.name.toLowerCase();
@@ -71,7 +67,7 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			appointments[dayHour] = name;
 		}
 
-		
+
 		console.log(appointments);
 	},
 
@@ -104,9 +100,9 @@ var AppStore = assign({}, EventEmitter.prototype, {
 AppStore.dispatchToken = AppDispatcher.register(function(payload){
 
 	var action = payload.action.actionType;
-	
+
 	switch(action) {
-	
+
 		case AppConstants.CREATE_APPOINTMENT:
 				AppStore.createAppointment(payload.action.appointment);
 				AppStore.emitChange();
@@ -115,7 +111,7 @@ AppStore.dispatchToken = AppDispatcher.register(function(payload){
 				AppStore.deleteAppointment(payload.action.appointment);
 				AppStore.emitChange();
 				break;
-		case AppConstants.EDIT_APPOINTMENT: 
+		case AppConstants.EDIT_APPOINTMENT:
 				AppStore.editAppointment(payload.action.appointment);
 				AppStore.emitChange();
 				break;
