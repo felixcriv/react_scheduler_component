@@ -13,12 +13,9 @@ var Table = require('react-bootstrap/lib/Table');
 
 /*Renders a scheduler component based on user input appointments*/
 var Scheduler = React.createClass({
-
-
-	getInitialState: function(){
-		return {
-
-			//getting state from the store
+  getInitialState: function(){
+    return {
+      //getting state from the store
 			appointments: AppStore.getAppointments(),
 
 			workingDays: AppStore.getWorkingDays(),
@@ -30,33 +27,31 @@ var Scheduler = React.createClass({
 			patientName: '',
 			patientNumber: '',
 			shouldShowModal: false,
-			
+
 			/*flag for user messages interaction*/
 			isEditingMode: false
 		}
 	},
 
 	componentWillMount: function(){
-
 		React.initializeTouchEvents(true);
 	},
 
 	componentDidMount: function() {
-    	AppStore.addChangeListener(this._onChange);
-  	},
+    AppStore.addChangeListener(this._onChange);
+  },
 
-  	showModal: function(show){
-  		
-  		this.setState({shouldShowModal: show});
-  	},
+  showModal: function(show){
+  	this.setState({shouldShowModal: show});
+  },
 
-  	_onChange: function() {
-    	this.setState(AppStore.getAppointments());
-  	},
+  _onChange: function() {
+    this.setState(AppStore.getAppointments());
+  },
 
 	closeModal: function(cb){
-		 this.setState({shouldShowModal: false });
-		 cb();
+		this.setState({shouldShowModal: false });
+		cb();
 	},
 
 
@@ -68,39 +63,29 @@ var Scheduler = React.createClass({
 		this.setState({ shouldShowModal: false });
 	},
 
-	
+
 	resetModal: function(cb){
 		cb();
 	},
 
 	update: function(e, patient, mode){
-
-	 this.setState({patientName: patient.name});
-	 this.setState({patientNumber: patient.phone});
-
-	 this.setState({selectedDay: e});
-	 this.setState({isEditingMode: mode});
-	
+    this.setState({patientName: patient.name});
+    this.setState({patientNumber: patient.phone});
+    this.setState({selectedDay: e});
+    this.setState({isEditingMode: mode});
 	},
 
 	createAppointment: function(){
-		
-		AppActions.createAppointment({day: this.state.workingDays[this.state.selectedDay.day], 
-									  hour: this.state.selectedDay.hour, 
-									  patient: {name: this.state.patientName,
-										 		phone: this.state.patientNumber
-									}
+    AppActions.createAppointment({day: this.state.workingDays[this.state.selectedDay.day], hour: this.state.selectedDay.hour,
+			patient: {name: this.state.patientName, phone: this.state.patientNumber}
 		});
 
 		this.resetModal(this.closeModal.bind(null, this.clearInputs));
 	},
 
 	editAppointment: function(){
-		AppActions.editAppointment({day: this.state.workingDays[this.state.selectedDay.day], 
-									  hour: this.state.selectedDay.hour, 
-									  patient: {name: this.state.patientName,
-										 		phone: this.state.patientNumber
-									}
+		AppActions.editAppointment({day: this.state.workingDays[this.state.selectedDay.day], hour: this.state.selectedDay.hour,
+			patient: {name: this.state.patientName, phone: this.state.patientNumber}
 		});
 
 		this.resetModal(this.closeModal.bind(null, this.clearInputs));
@@ -108,29 +93,23 @@ var Scheduler = React.createClass({
 
 
 	deleteAppointment: function(){
-		AppActions.deleteAppointment({day: this.state.workingDays[this.state.selectedDay.day], 
-									  hour: this.state.selectedDay.hour});
-
+		AppActions.deleteAppointment({day: this.state.workingDays[this.state.selectedDay.day], hour: this.state.selectedDay.hour});
 		this.resetModal(this.closeModal.bind(null, this.clearInputs));
 	},
 
 
-	patientNamehandleChange: function(e){
+	patientNameHandleChange: function(e){
 		this.setState({patientName : this.refs.patientName.getValue()});
 	},
 
 	patientNumberhandleChange: function(e){
-
 		this.setState({patientNumber : this.refs.patientNumber.getValue()});
 	},
 
 	render: function(){
-
-		//creates the header for the scheduler
-		var _workingdays = this.state.workingDays.map(function(day, i){
-			return(
-				<th key={day}>{day}</th>
-			);
+    //creates the header for the scheduler
+    var _workingdays = this.state.workingDays.map(function(day, i){
+      return( <th key={day}>{day}</th> );
 		});
 
 		var isEditingMode = this.state.isEditingMode;
@@ -139,57 +118,55 @@ var Scheduler = React.createClass({
 
 		//http://react-bootstrap.github.io/components.html#input
 		//Input and table react bootstrap component
-		return(	
-			<div className='container'>
-				<div id='modal-wrapper'>
-						<Modal show={this.state.shouldShowModal} onHide={this.closeModal.bind(null, this.clearInputs)} dialogClassName='modalStyle' ref='modalWindow'>
-				          <Modal.Header closeButton>
-				            <Modal.Title>{status === 'Save changes ' ? 'Update ' : 'Schedule '} your appointment on  
-				            	{' ' + this.state.workingDays[this.state.selectedDay.day]} @  
-				            	{' ' + this.state.selectedDay.hour > 12 ? (' ' + this.state.selectedDay.hour - 12) : this.state.selectedDay.hour}  
-				            	{(this.state.selectedDay.hour < 12) ? 'A.M' : 'P.M'}
-				            </Modal.Title>
-				          </Modal.Header>
-				          <Modal.Body>
-				            <p>
-				             {isEditingMode ? <label>Name</label> : ''}<Input
-						        type='text'
-						        value={this.state.patientName}
-						        placeholder='Enter your name'
-						        
-						        ref='patientName'
-						        groupClassName='group-class'
-						        labelClassName='label-class'
-						        onChange={this.patientNamehandleChange} />
-						     {isEditingMode ? <label>Phone</label> : ''}<Input
-						        type='phone'
-						        value={this.state.patientNumber}
-						        placeholder='Enter your phone number'
-						        
-						        ref='patientNumber'
-						        groupClassName='group-class'
-						        labelClassName='label-class' 
-						        onChange={this.patientNumberhandleChange} />
-				            </p>
-				          </Modal.Body>
-				            <Modal.Footer>
-						    	<Button onClick={this.resetModal.bind(null, this.clearInputs)}>cancel</Button>
-						    	{
-						    		
-						    		isEditingMode ?
-						    		<span style={{'marginLeft':'5px'}}>
-						    			<Button onClick={this.deleteAppointment} bsStyle='danger'>delete</Button>
-						    			<Button onClick={this.editAppointment} bsStyle='primary'>{status}</Button>
-						    		</span>
-						    		:<Button onClick={this.createAppointment} bsStyle='primary'>{status}</Button>
-
-						    	}
-						        
-						    </Modal.Footer>
-				        </Modal>
-				</div>
-				<div className='scheduler'>
-					<Table striped responsive>
+		return(
+      <div className='container'>
+        <div id='modal-wrapper'>
+          <Modal show={this.state.shouldShowModal} onHide={this.closeModal.bind(null, this.clearInputs)} dialogClassName='modalStyle' ref='modalWindow'>
+				    <Modal.Header closeButton>
+				      <Modal.Title>{status === 'Save changes ' ? 'Update ' : 'Schedule '} your appointment on
+				        {' ' + this.state.workingDays[this.state.selectedDay.day]} @
+				        {' ' + this.state.selectedDay.hour > 12 ? (' ' + this.state.selectedDay.hour - 12) : this.state.selectedDay.hour}
+				        {(this.state.selectedDay.hour < 12) ? 'A.M' : 'P.M'}
+				      </Modal.Title>
+				    </Modal.Header>
+				    <Modal.Body>
+				      <p>
+                {isEditingMode ? <label>Name</label> : ''}
+                <Input
+						      type='text'
+						      value={this.state.patientName}
+						      placeholder='Enter your name'
+                  ref='patientName'
+						      groupClassName='group-class'
+						      labelClassName='label-class'
+						      onChange={this.patientNameHandleChange}
+                />
+						    {isEditingMode ? <label>Phone</label> : ''}
+                <Input
+						      type='phone'
+						      value={this.state.patientNumber}
+						      placeholder='Enter your phone number'
+						      ref='patientNumber'
+						      groupClassName='group-class'
+						      labelClassName='label-class'
+						      onChange={this.patientNumberhandleChange} />
+				      </p>
+				    </Modal.Body>
+				    <Modal.Footer>
+						  <Button onClick={this.resetModal.bind(null, this.clearInputs)}>cancel</Button>
+						  {
+						    isEditingMode ?
+						    <span style={{'marginLeft':'5px'}}>
+						    	<Button onClick={this.deleteAppointment} bsStyle='danger'>delete</Button>
+						    	<Button onClick={this.editAppointment} bsStyle='primary'>{status}</Button>
+						    </span>
+						    :<Button onClick={this.createAppointment} bsStyle='primary'>{status}</Button>
+						  }
+						</Modal.Footer>
+				  </Modal>
+			  </div>
+			  <div className='scheduler'>
+          <Table striped responsive>
 					  <thead>
 					    <tr>
 					      <th>Hours</th>
@@ -197,17 +174,17 @@ var Scheduler = React.createClass({
 					    </tr>
 					  </thead>
 					  <tbody>
-					    <Schedule showModal={this.showModal} 
-					    		  update={this.update} 
-					    		  workingDays={this.state.workingDays} 
-					    		  workingHours={this.state.workingHours}
+					    <Schedule showModal={this.showModal}
+					    	update={this.update}
+					    	workingDays={this.state.workingDays}
+					    	workingHours={this.state.workingHours}
 					    />
 					  </tbody>
 					</Table>
 				</div>
-			</div>
-		)
-	}
+		  </div>
+   )
+  }
 });
 
 module.exports = Scheduler;
