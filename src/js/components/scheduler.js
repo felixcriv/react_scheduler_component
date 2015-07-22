@@ -26,14 +26,11 @@ var Scheduler = React.createClass({
 			workingHours: AppStore.getWorkingHours(),
 
 			selectedDay: {},
-			//working days for the schedule, we can use a store instead to get this data from
-			//a web service
 
 			patientName: '',
 			patientNumber: '',
 			shouldShowModal: false,
-			/*validate form*/
-			isValid : false,
+			
 			/*flag for user messages interaction*/
 			isEditingMode: false
 		}
@@ -62,12 +59,6 @@ var Scheduler = React.createClass({
 		 cb();
 	},
 
-	validationState: function(){
-		// var length = this.state.patientNumber.length;
-	 //    if (length >= 10) { return 'success'; }
-	 //    else if (length > 5) { return 'warning'; }
-	 //    else if (length > 0) { return 'error'; }
-	},
 
 	//clear modal and focus
 	//https://facebook.github.io/react/docs/more-about-refs.html#completing-the-example
@@ -175,7 +166,6 @@ var Scheduler = React.createClass({
 						        value={this.state.patientNumber}
 						        placeholder='Enter your phone number'
 						        
-						        bsStyle={this.validationState()}
 						        ref='patientNumber'
 						        groupClassName='group-class'
 						        labelClassName='label-class' 
