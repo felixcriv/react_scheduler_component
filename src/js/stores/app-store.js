@@ -66,9 +66,6 @@ var AppStore = assign({}, EventEmitter.prototype, {
 			//create patient and appoint. for new patient
 			appointments[dayHour] = name;
 		}
-
-
-		console.log(appointments);
 	},
 
 	getAppointments: function(){
